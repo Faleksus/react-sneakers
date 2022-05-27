@@ -1,13 +1,40 @@
+import React from "react";
 import Card from "./components/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
 
 function App() {
+  const [items, setItems] = React.useState([])
+  const [cartItems, setCartItems] = React.useState([])
+
+  const [cartOpened, setCartOpened] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch('https://6290ab25665ea71fe13810d5.mockapi.io/items')
+      .then((res) => {
+      return res.json();
+      })
+      .then((json) => {
+        setItems(json)
+      });
+  }, []);
+
+  const onAddToCart = (obj) => {
+    setCartItems((prev) => [...prev, obj])
+  }
+
   return (
     <div className="wrapper clear">
 
-      <Drawer />
-      <Header />
+      { cartOpened && 
+      <Drawer 
+        items={cartItems}
+        onClose={() => setCartOpened(false)} 
+      /> 
+      }
+      <Header 
+        onClickCart={() => setCartOpened(true)} 
+      />
 
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
@@ -17,12 +44,36 @@ function App() {
             <input type="text" placeholder="Поиск..." />
           </div>
         </div>
-        <div className="d-flex">
+        <div className="d-flex flex-wrap">
 
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+
+        {/* <Card 
+          title="Мужские Кроссовки Nike Air Max 270"
+          price={15600}
+          imageUrl="/img/sneakers/2.jpg"
+        />
+
+        <Card 
+          title="Мужские Кроссовки Nike Blazer Mid Suede"
+          price={12799}
+          imageUrl="/img/sneakers/3.jpg"
+        />
+
+        <Card 
+          title="Мужские Кроссовки Nike Blazer Mid Suede"
+          price={18700}
+          imageUrl="/img/sneakers/4.jpg"
+        /> */}
+
+        { items.map((item) => (
+          <Card 
+            title={item.title}
+            price={item.price}
+            imageUrl={item.imageUrl}
+            onFavorite={() => console.log('Click Favorite')}
+            onPlus={(obj) => onAddToCart(obj)}
+          />
+        ))}
 
         </div>
       </div>
