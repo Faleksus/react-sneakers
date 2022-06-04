@@ -2,7 +2,7 @@ import React from 'react'
 import Card from '../components/Card'
 
 
-export default function Home( 
+export function Home( 
     {
         items, 
         searchValue, 

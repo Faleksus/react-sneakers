@@ -2,7 +2,7 @@ import React from 'react'
 import AppContext from '../context'
 import Card from '../components/Card'
 
-export default function Favorites() {
+export function Favorites() {
     const {favorites, onAddToFavorite } = React.useContext(AppContext)
 
     return (
